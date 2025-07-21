@@ -14,49 +14,10 @@
   <form id="submissionForm">
     <textarea id="userText" placeholder="Type something..." rows="5" cols="30"></textarea><br>
     <input type="file" id="imageInput" accept="image/*"><br>
-    <button type="submit">Generate JSON</button>
+    <button type="submit">Submit</button>
   </form>
-  <pre id="output"></pre>
 
-  <script>
-    const form = document.getElementById("submissionForm");
-    const output = document.getElementById("output");
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const text = document.getElementById("userText").value;
-      const imageFile = document.getElementById("imageInput").files[0];
-
-      let imageBase64 = null;
-      if (imageFile) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          imageBase64 = reader.result;
-
-          const entry = {
-            text: text || null,
-            imageBase64: imageBase64 || null,
-            timestamp: new Date().toISOString()
-          };
-
-          output.textContent = JSON.stringify(entry, null, 2);
-          alert("Copy this JSON and add it to your data.json file!");
-        };
-        reader.readAsDataURL(imageFile);
-      } else {
-        const entry = {
-          text: text || null,
-          imageBase64: null,
-          timestamp: new Date().toISOString()
-        };
-
-        output.textContent = JSON.stringify(entry, null, 2);
-        alert("Copy this JSON and add it to your data.json file!");
-      }
-
-      form.reset();
-    });
-  </script>
+  <script src="form-handler.js"></script>
 </body>
 </html>
 
