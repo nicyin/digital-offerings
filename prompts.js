@@ -11,7 +11,11 @@ const prompts = [
     "your lock screen",
     "a funny screenshot",
     "something you wanted to remember",
-    "a note"
+    "a note",
+    "the last text received",
+    "an email you've been ignoring",
+    "a screenshot of your camera roll",
+    "a screenshot of your messages"
 ];
 
 // Function to get a random prompt
@@ -23,7 +27,7 @@ function getRandomPrompt() {
 // Initialize when page loads
 window.addEventListener('load', () => {
     const promptContainer = document.getElementById('prompt-container');
-    
+
     // Display initial random prompt
     promptContainer.textContent = getRandomPrompt();
 
