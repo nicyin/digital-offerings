@@ -6,9 +6,8 @@ form.addEventListener("submit", async (e) => {
   const imageFile = document.getElementById("imageInput").files[0];
 
   try {
-    // Get existing data
-    const response = await fetch('data.json');
-    const data = await response.json();
+    // Get existing data from localStorage
+    let data = JSON.parse(localStorage.getItem('entries') || '{"entries": []}');
     
     // Create new entry
     const newEntry = {
@@ -32,10 +31,10 @@ form.addEventListener("submit", async (e) => {
     function saveEntry() {
       // Add new entry to data
       data.entries.push(newEntry);
-
-      // Update the display immediately
-      displayLatestEntry();
       
+      // Save to localStorage
+      localStorage.setItem('entries', JSON.stringify(data));
+
       // Reset form and show success
       form.reset();
       document.getElementById("prompt-container").textContent = getRandomPrompt();

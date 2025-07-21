@@ -10,17 +10,17 @@
     <div id="entries-container"></div>
 
     <script>
-        async function loadEntries() {
+        function loadEntries() {
             try {
-                const response = await fetch('data.json');
-                const data = await response.json();
+                // Get data from localStorage
+                const data = JSON.parse(localStorage.getItem('entries') || '{"entries": []}');
                 const container = document.getElementById('entries-container');
                 
                 // Clear container
                 container.innerHTML = '';
                 
                 // Display entries in reverse chronological order
-                data.entries.reverse().forEach(entry => {
+                [...data.entries].reverse().forEach(entry => {
                     const entryDiv = document.createElement('div');
                     entryDiv.className = 'entry';
                     
