@@ -4,70 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Offerings - Display</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="controls">
-        <button id="clearAll" class="danger-button">Clear All Entries</button>
-    </div>
     <div id="entries-container"></div>
 
     <script>
         function loadEntries() {
             try {
-                // Get data from localStorage
-                const data = JSON.parse(localStorage.getItem('entries') || '{"entries": []}');
-                const container = document.getElementById('entries-container');
-                
-                // Clear container
-                container.innerHTML = '';
-                
-                // Display entries in reverse chronological order
-                [...data.entries].reverse().forEach(entry => {
-                    const entryDiv = document.createElement('div');
-                    entryDiv.className = 'entry';
-                    
-                    if (entry.text) {
-                        const textP = document.createElement('p');
-                        textP.textContent = entry.text;
-                        entryDiv.appendChild(textP);
-                    }
-                    
-                    if (entry.imageBase64) {
-                        const img = document.createElement('img');
-                        img.src = entry.imageBase64;
-                        img.alt = 'Uploaded image';
-                        entryDiv.appendChild(img);
-                    }
-                    
-                    const timestamp = document.createElement('small');
-                    timestamp.textContent = new Date(entry.timestamp).toLocaleString();
-                    entryDiv.appendChild(timestamp);
-                    
-                    container.appendChild(entryDiv);
-                });
+                fetch('/api/entries')
+                    .then(response => response.json())
+                    .then(data => {
+                        const container = document.getElementById('entries-container');
+                        
+                        // Clear container
+                        container.innerHTML = '';
+                        
+                        // Display entries in reverse chronological order
+                        data.entries.forEach(entry => {
+                            const entryDiv = document.createElement('div');
+                            entryDiv.className = 'entry';
+                            
+                            if (entry.text) {
+                                const textP = document.createElement('p');
+                                textP.textContent = entry.text;
+                                entryDiv.appendChild(textP);
+                            }
+                            
+                            if (entry.imageBase64) {
+                                const img = document.createElement('img');
+                                img.src = entry.imageBase64;
+                                img.alt = 'Uploaded image';
+                                entryDiv.appendChild(img);
+                            }
+                            
+                            const timestamp = document.createElement('small');
+                            timestamp.textContent = new Date(entry.timestamp).toLocaleString();
+                            entryDiv.appendChild(timestamp);
+                            
+                            container.appendChild(entryDiv);
+                        });
+                    });
             } catch (error) {
                 console.error('Error loading entries:', error);
             }
         }
 
-        // Clear all entries
-        document.getElementById('clearAll').addEventListener('click', () => {
-            if (confirm('Are you sure you want to clear all entries? This cannot be undone.')) {
-                localStorage.setItem('entries', '{"entries": []}');
-                loadEntries();
-            }
-        });
-
         // Load entries immediately
         loadEntries();
 
-        // Listen for changes to localStorage from other tabs/windows
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'entries') {
-                loadEntries();
-            }
-        });
+        // Refresh entries every few seconds
+        setInterval(loadEntries, 5000);
     </script>
 </body>
 </html>

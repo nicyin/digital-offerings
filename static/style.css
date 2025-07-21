@@ -7,30 +7,6 @@ body {
     line-height: 1.6;
 }
 
-/* Controls Section */
-.controls {
-    margin-bottom: 20px;
-    padding: 10px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.danger-button {
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.2s;
-}
-
-.danger-button:hover {
-    background: #c82333;
-}
-
 /* Form Styling */
 form {
     background: white;
