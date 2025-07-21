@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>digital offerings - test</title>
   <link rel="stylesheet" href="style.css">
-  <script src="config.js"></script>
   <script src="prompts.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -20,7 +19,22 @@
   </form>
 
   <script type="module">
-    import { handleSubmission } from './firebase-init.js';
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA4eIpYUBjAPVUcxK-JcEYwmu6nKcrn7Lk",
+      authDomain: "digital-offerings.firebaseapp.com",
+      projectId: "digital-offerings",
+      storageBucket: "digital-offerings.firebasestorage.app",
+      messagingSenderId: "992501647817",
+      appId: "1:992501647817:web:16fe0ccb14c0c3e3a04018"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
 
     const form = document.getElementById("submissionForm");
     const imageInput = document.getElementById("imageInput");
@@ -52,15 +66,40 @@
         const imageFile = imageInput.files[0];
         const currentPrompt = document.getElementById("prompt-container").textContent;
 
-        const result = await handleSubmission(text, imageFile, currentPrompt);
-        
-        if (result.success) {
-          // Clear the form and preview
-          form.reset();
-          imagePreview.innerHTML = "";
-          document.getElementById("prompt-container").textContent = getRandomPrompt();
-          alert("Submitted successfully!");
+        let imageUrl = null;
+
+        if (imageFile) {
+          try {
+            const timestamp = Date.now();
+            const filename = `${timestamp}_${imageFile.name}`;
+            const storageRef = ref(storage, `images/${filename}`);
+            
+            const snapshot = await uploadBytes(storageRef, imageFile);
+            console.log('Image uploaded successfully');
+            
+            imageUrl = await getDownloadURL(snapshot.ref);
+            console.log('Image URL:', imageUrl);
+          } catch (imageError) {
+            console.error("Error uploading image:", imageError);
+            throw new Error(`Image upload failed: ${imageError.message}`);
+          }
         }
+
+        const docRef = await addDoc(collection(db, "entries"), {
+          text: text || null,
+          imageUrl: imageUrl,
+          prompt: currentPrompt,
+          timestamp: serverTimestamp()
+        });
+
+        console.log("Document written with ID:", docRef.id);
+        
+        // Clear the form and preview
+        form.reset();
+        imagePreview.innerHTML = "";
+        document.getElementById("prompt-container").textContent = getRandomPrompt();
+        alert("Submitted successfully!");
+
       } catch (error) {
         console.error("Error in form submission:", error);
         alert(`Error: ${error.message}. Please try again.`);
