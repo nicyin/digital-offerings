@@ -23,13 +23,13 @@
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-storage.js";
 
     const firebaseConfig = {
-    apiKey: "AIzaSyA4eIpYUBjAPVUcxK-JcEYwmu6nKcrn7Lk",
-    authDomain: "digital-offerings.firebaseapp.com",
-    projectId: "digital-offerings",
-    storageBucket: "digital-offerings.firebasestorage.app",
-    messagingSenderId: "992501647817",
-    appId: "1:992501647817:web:16fe0ccb14c0c3e3a04018"
-  };
+      apiKey: "AIzaSyA4eIpYUBjAPVUcxK-JcEYwmu6nKcrn7Lk",
+      authDomain: "digital-offerings.firebaseapp.com",
+      projectId: "digital-offerings",
+      storageBucket: "digital-offerings.firebasestorage.app",
+      messagingSenderId: "992501647817",
+      appId: "1:992501647817:web:16fe0ccb14c0c3e3a04018"
+    };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
@@ -39,26 +39,60 @@
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const text = document.getElementById("userText").value;
-      const imageFile = document.getElementById("imageInput").files[0];
-      let imageUrl = null;
+      const submitButton = form.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+      
+      try {
+        const text = document.getElementById("userText").value;
+        const imageFile = document.getElementById("imageInput").files[0];
+        let imageUrl = null;
 
-      if (imageFile) {
-        const imageRef = ref(storage, 'uploads/' + imageFile.name);
-        const uploadSnap = await uploadBytes(imageRef, imageFile);
-        imageUrl = await getDownloadURL(uploadSnap.ref);
+        if (imageFile) {
+          try {
+            // Create a unique filename using timestamp
+            const timestamp = Date.now();
+            const filename = `${timestamp}_${imageFile.name}`;
+            const storageRef = ref(storage, `images/${filename}`);
+            
+            // Upload the image
+            const snapshot = await uploadBytes(storageRef, imageFile);
+            console.log('Image uploaded successfully');
+            
+            // Get the download URL
+            imageUrl = await getDownloadURL(snapshot.ref);
+            console.log('Image URL:', imageUrl);
+          } catch (imageError) {
+            console.error("Error uploading image:", imageError);
+            throw new Error(`Image upload failed: ${imageError.message}`);
+          }
+        }
+
+        // Get current prompt
+        const currentPrompt = document.getElementById("prompt-container").textContent;
+
+        // Add document to Firestore
+        const docRef = await addDoc(collection(db, "entries"), {
+          text: text || null,
+          imageUrl: imageUrl,
+          prompt: currentPrompt,
+          timestamp: serverTimestamp()
+        });
+
+        console.log("Document written with ID:", docRef.id);
+        
+        // Clear the form
+        form.reset();
+        // Show new prompt
+        document.getElementById("prompt-container").textContent = getRandomPrompt();
+        alert("Submitted successfully!");
+
+      } catch (error) {
+        console.error("Error in form submission:", error);
+        alert(`Error: ${error.message}. Please try again.`);
+      } finally {
+        submitButton.disabled = false;
       }
-
-      await addDoc(collection(db, "entries"), {
-        text: text || null,
-        imageUrl: imageUrl || null,
-        timestamp: serverTimestamp()
-      });
-
-      form.reset();
-      alert("Submitted!");
     });
   </script>
-
 </body>
 </html>
