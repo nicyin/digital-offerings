@@ -5,3 +5,55 @@ Display as styled cards, blocks, or elements in any layout
 Use CSS/JS (or p5.js, GSAP, etc.) to animate them however you want
 
 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Memory Wall</title>
+  <style>
+    .entry {
+      border: 1px solid #ccc;
+      margin: 1em 0;
+      padding: 1em;
+      border-radius: 8px;
+    }
+    img {
+      max-width: 300px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Memory Wall</h1>
+  <div id="memoryWall"></div>
+
+  <script>
+    async function loadEntries() {
+      const response = await fetch('data.json');
+      const entries = await response.json();
+      const wall = document.getElementById("memoryWall");
+
+      entries.forEach(entry => {
+        const div = document.createElement("div");
+        div.className = "entry";
+
+        if (entry.text) {
+          const p = document.createElement("p");
+          p.textContent = entry.text;
+          div.appendChild(p);
+        }
+
+        if (entry.imageBase64) {
+          const img = document.createElement("img");
+          img.src = entry.imageBase64;
+          div.appendChild(img);
+        }
+
+        wall.appendChild(div);
+      });
+    }
+
+    loadEntries();
+  </script>
+</body>
+</html>

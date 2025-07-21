@@ -14,99 +14,49 @@
   <form id="submissionForm">
     <textarea id="userText" placeholder="Type something..." rows="5" cols="30"></textarea><br>
     <input type="file" id="imageInput" accept="image/*"><br>
-    <div id="imagePreview"></div>
-    <button type="submit">Submit</button>
+    <button type="submit">Generate JSON</button>
   </form>
+  <pre id="output"></pre>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-storage.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyA4eIpYUBjAPVUcxK-JcEYwmu6nKcrn7Lk",
-      authDomain: "digital-offerings.firebaseapp.com",
-      projectId: "digital-offerings",
-      storageBucket: "digital-offerings.firebasestorage.app",
-      messagingSenderId: "992501647817",
-      appId: "1:992501647817:web:16fe0ccb14c0c3e3a04018"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-
+  <script>
     const form = document.getElementById("submissionForm");
-    const imageInput = document.getElementById("imageInput");
-    const imagePreview = document.getElementById("imagePreview");
-
-    // Handle image preview
-    imageInput.addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      if (file && file.type.startsWith("image/")) {
-        const reader = new FileReader();
-        
-        reader.onload = (e) => {
-          imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-        };
-        
-        reader.readAsDataURL(file);
-      } else {
-        imagePreview.innerHTML = "";
-      }
-    });
+    const output = document.getElementById("output");
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const submitButton = form.querySelector('button[type="submit"]');
-      submitButton.disabled = true;
-      
-      try {
-        const text = document.getElementById("userText").value;
-        const imageFile = imageInput.files[0];
-        const currentPrompt = document.getElementById("prompt-container").textContent;
+      const text = document.getElementById("userText").value;
+      const imageFile = document.getElementById("imageInput").files[0];
 
-        let imageUrl = null;
+      let imageBase64 = null;
+      if (imageFile) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          imageBase64 = reader.result;
 
-        if (imageFile) {
-          try {
-            const timestamp = Date.now();
-            const filename = `${timestamp}_${imageFile.name}`;
-            const storageRef = ref(storage, `images/${filename}`);
-            
-            const snapshot = await uploadBytes(storageRef, imageFile);
-            console.log('Image uploaded successfully');
-            
-            imageUrl = await getDownloadURL(snapshot.ref);
-            console.log('Image URL:', imageUrl);
-          } catch (imageError) {
-            console.error("Error uploading image:", imageError);
-            throw new Error(`Image upload failed: ${imageError.message}`);
-          }
-        }
+          const entry = {
+            text: text || null,
+            imageBase64: imageBase64 || null,
+            timestamp: new Date().toISOString()
+          };
 
-        const docRef = await addDoc(collection(db, "entries"), {
+          output.textContent = JSON.stringify(entry, null, 2);
+          alert("Copy this JSON and add it to your data.json file!");
+        };
+        reader.readAsDataURL(imageFile);
+      } else {
+        const entry = {
           text: text || null,
-          imageUrl: imageUrl,
-          prompt: currentPrompt,
-          timestamp: serverTimestamp()
-        });
+          imageBase64: null,
+          timestamp: new Date().toISOString()
+        };
 
-        console.log("Document written with ID:", docRef.id);
-        
-        // Clear the form and preview
-        form.reset();
-        imagePreview.innerHTML = "";
-        document.getElementById("prompt-container").textContent = getRandomPrompt();
-        alert("Submitted successfully!");
-
-      } catch (error) {
-        console.error("Error in form submission:", error);
-        alert(`Error: ${error.message}. Please try again.`);
-      } finally {
-        submitButton.disabled = false;
+        output.textContent = JSON.stringify(entry, null, 2);
+        alert("Copy this JSON and add it to your data.json file!");
       }
+
+      form.reset();
     });
   </script>
 </body>
 </html>
+
