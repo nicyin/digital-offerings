@@ -83,15 +83,19 @@ body::after {
     mix-blend-mode: overlay;
 }
 
-/* Entry styling */
+/* Enhanced Entry Container */
 #entries-container {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
+/* Enhanced Entry Styling */
 .entry {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(10px);
@@ -101,25 +105,92 @@ body::after {
     margin: 20px 0;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.entry img {
+.entry:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Text Entry Styles */
+.entry-type-text {
+    /* Specific styles for text-only entries */
+    padding: 25px;
+}
+
+.entry-text {
+    font-size: 24px;
+    line-height: 1.6;
+    margin: 0.5em 0;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.entry-text-short {
+    font-size: 32px;
+    text-align: center;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+}
+
+.entry-text-long {
+    font-size: 20px;
+    text-align: left;
+    letter-spacing: 0.01em;
+}
+
+/* Image Entry Styles */
+.entry-type-image {
+    /* Specific styles for entries with images */
+    padding: 15px;
+}
+
+.image-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 1em 0;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.entry-image {
     max-width: 100%;
     height: auto;
     border-radius: 4px;
     margin: 10px 0;
+    transition: transform 0.3s ease;
 }
 
-.entry p {
-    margin: 10px 0;
+.entry-image:hover {
+    transform: scale(1.02);
 }
 
-.entry small {
-    color: #666;
+/* Timestamp Styling */
+.entry-timestamp {
+    color: rgba(0, 0, 0, 0.5);
     display: block;
-    margin-top: 10px;
+    margin-top: 15px;
+    font-size: 0.9em;
+    text-align: right;
 }
 
+/* Entry Animation 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.entry-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}*/
+
+/* Keep your existing floating prompt styles */
 @keyframes float {
     0%, 100% {
         transform: translateY(0);
