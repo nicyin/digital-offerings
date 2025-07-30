@@ -9,13 +9,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div id="prompt-container"></div>
-
-    <form id="submissionForm">
-        <textarea id="userText" placeholder="Type something..." rows="5" cols="30"></textarea><br>
-        <input type="file" id="imageInput" accept="image/*"><br>
-        <button type="submit">Submit</button>
-    </form>
+    <div class="mobile-container">
+        <div class="header-area"></div>
+        
+        <div class="content-area">
+            <div id="prompt-container"></div>
+        </div>
+        
+        <div class="input-area">
+            <form id="submissionForm">
+                <div class="input-wrapper">
+                    <textarea id="userText" placeholder="Type or paste your response" rows="3"></textarea>
+                    <label for="imageInput" class="image-upload-label">
+                        <i class="fas fa-image"></i>
+                    </label>
+                    <input type="file" id="imageInput" accept="image/*" hidden>
+                </div>
+                <button type="submit">offer</button>
+            </form>
+        </div>
+    </div>
     <script src="/static/form-handler.js"></script>
 </body>
 </html>

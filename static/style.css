@@ -78,3 +78,95 @@ button:hover {
     color: #333;
     font-style: italic;
 }
+
+/* Mobile-specific styles */
+.mobile-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.header-area {
+    height: 60px;
+    background: white;
+    border-bottom: 1px solid #eee;
+}
+
+.content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-area {
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #eee;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+
+textarea {
+    flex: 1;
+    margin: 0;
+    padding: 12px;
+    padding-right: 40px;
+    min-height: 44px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    resize: none;
+}
+
+.image-upload-label {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    color: #666;
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    width: 100%;
+    background: #000;
+    color: white;
+    padding: 12px;
+    border-radius: 20px;
+    text-transform: lowercase;
+    font-size: 18px;
+}
+
+#prompt-container {
+    font-size: 24px;
+    margin: 0;
+    text-align: center;
+    color: #333;
+    font-style: normal;
+}
+
+/* Override some existing styles for mobile */
+body {
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    background: white;
+}
+
+form {
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    background: transparent;
+}
