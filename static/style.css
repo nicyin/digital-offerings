@@ -3,7 +3,7 @@ body {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background: #000;
+    background: #f5f5f5;
     line-height: 1.6;
 }
 
@@ -77,47 +77,4 @@ button:hover {
     text-align: center;
     color: #333;
     font-style: italic;
-}
-
-.iridescent-wave {
-  position: relative;
-  min-height: 100vh;
-  overflow: hidden;
-}
-
-.iridescent-wave::before,
-.iridescent-wave::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    rgba(255, 182, 193, 0.7),
-    rgba(135, 206, 235, 0.7),
-    rgba(221, 160, 221, 0.7)
-  );
-  animation: wave 20s ease-in-out infinite;
-  filter: blur(30px);
-}
-
-.iridescent-wave::after {
-  animation-delay: -5s;
-  opacity: 0.7;
-  background: linear-gradient(
-    -45deg,
-    rgba(255, 182, 193, 0.5),
-    rgba(135, 206, 235, 0.5),
-    rgba(221, 160, 221, 0.5)
-  );
-}
-
-@keyframes wave {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(-10%, 10%) rotate(90deg); }
-  50% { transform: translate(-20%, 0%) rotate(180deg); }
-  75% { transform: translate(-10%, -10%) rotate(270deg); }
-  100% { transform: translate(0, 0) rotate(360deg); }
 }
