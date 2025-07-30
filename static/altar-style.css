@@ -45,32 +45,6 @@ button:hover {
     background: #0056b3;
 }
 
-/* Display Page Styling */
-.entry {
-    background: white;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.entry img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-    margin: 10px 0;
-}
-
-.entry p {
-    margin: 10px 0;
-}
-
-.entry small {
-    color: #666;
-    display: block;
-    margin-top: 10px;
-}
-
 #prompt-container {
     font-size: 24px;
     margin: 20px 0;
@@ -88,12 +62,12 @@ button:hover {
     margin: 0;
     padding: 0;
     position: relative;
+    background: #fff;
 }
 
 .header-area {
     height: 60px;
     background: white;
-    border-bottom: 1px solid #eee;
 }
 
 .content-area {
@@ -108,8 +82,7 @@ button:hover {
 
 .input-area {
     padding: 15px;
-    background: white;
-    border-top: 1px solid #eee;
+    background: white;  
 }
 
 .input-wrapper {
@@ -146,27 +119,4 @@ button[type="submit"] {
     border-radius: 20px;
     text-transform: lowercase;
     font-size: 18px;
-}
-
-#prompt-container {
-    font-size: 24px;
-    margin: 0;
-    text-align: center;
-    color: #333;
-    font-style: normal;
-}
-
-/* Override some existing styles for mobile */
-body {
-    margin: 0;
-    padding: 0;
-    max-width: 100%;
-    background: white;
-}
-
-form {
-    margin: 0;
-    padding: 0;
-    box-shadow: none;
-    background: transparent;
 }
