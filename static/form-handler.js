@@ -5,7 +5,7 @@ const imageInput = document.getElementById("imageInput");
 const previewContainer = document.createElement("div");
 previewContainer.className = "image-preview-container";
 previewContainer.style.display = "none";
-form.querySelector(".input-wrapper").appendChild(previewContainer);
+form.querySelector(".input-wrapper").after(previewContainer);
 
 // Handle image selection and preview
 imageInput.addEventListener("change", (e) => {
