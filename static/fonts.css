@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'PP Migra';
+    src: url('fonts/PPMigra-Regular.ttf') format('truetype');
+    src: url('fonts/PPMigra-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    }
+
+@font-face {
+    font-family: 'PP Migra';
+    src: url('fonts/PPMigra-Italic.ttf') format('truetype');
+    src: url('fonts/PPMigra-Italic.otf') format('opentype');
+    font-weight: 400;
+    font-style: italic;
+    }
+
+ .space-mono-regular {
+        font-family: "Space Mono", monospace;
+        font-weight: 400;
+        font-style: normal;
+    }
+      
+.space-mono-regular-italic {
+        font-family: "Space Mono", monospace;
+        font-weight: 400;
+        font-style: italic;
+    }

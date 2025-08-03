@@ -1,6 +1,6 @@
 /* Base styles */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'PP Migra', 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     max-width: 100%;
@@ -97,14 +97,13 @@ body::after {
 
 /* Enhanced Entry Styling */
 .entry {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    /*backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);*/
+    border: 0px;
     padding: 20px;
     margin: 20px 0;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /*box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -168,7 +167,7 @@ body::after {
 /* Timestamp Styling */
 .entry-timestamp {
     color: rgba(0, 0, 0, 0.5);
-    display: block;
+    display: none;
     margin-top: 15px;
     font-size: 0.9em;
     text-align: right;
@@ -213,9 +212,9 @@ body::after {
 }
 
 .prompt-text {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'PP Migra', 'Arial', sans-serif;
     color: rgba(0, 0, 0, 0.9);
-    font-size: 24px;
+    font-size: 40px;
     text-align: center;
     margin-bottom: 10px;
     font-weight: 300;
