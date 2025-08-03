@@ -116,17 +116,18 @@ body::after {
 .entry-type-text {
     /* Specific styles for text-only entries */
     padding: 25px;
+    font-family: 'Space Mono', monospace;
+    font-size: 24px;
+    letter-spacing: -0.2em;
 }
 
 .entry-text {
-    font-size: 24px;
     line-height: 1.6;
     margin: 0.5em 0;
     color: rgba(0, 0, 0, 0.8);
 }
 
 .entry-text-short {
-    font-size: 32px;
     text-align: center;
     font-weight: 300;
     letter-spacing: 0.02em;
@@ -222,7 +223,7 @@ body::after {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.fa-arrow-down {
+.custom-arrow {
     color: rgba(0, 0, 0, 0.9);
     font-size: 24px;
     margin-top: 5px;
@@ -242,7 +243,7 @@ and (max-height: 1194px) {
         font-size: 28px;
     }
 
-    .fa-arrow-down {
+    .custom-arrow {
         font-size: 28px;
         margin-top: 8px;
     }
