@@ -1,6 +1,34 @@
+@font-face {
+    font-family: 'PP Migra';
+    src: url('fonts/PPMigra-Regular.ttf') format('truetype');
+    src: url('fonts/PPMigra-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    }
+
+@font-face {
+    font-family: 'PP Migra Italic';
+    src: url('fonts/PPMigra-Italic.ttf') format('truetype');
+    src: url('fonts/PPMigra-Italic.otf') format('opentype');
+    font-weight: 400;
+    font-style: italic;
+    }
+
+ .space-mono-regular {
+        font-family: "Space Mono", monospace;
+        font-weight: 400;
+        font-style: normal;
+    }
+      
+.space-mono-regular-italic {
+        font-family: "Space Mono", monospace;
+        font-weight: 400;
+        font-style: italic;
+    }
+      
 /* Base styles */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'PP Migra', 'Arial', sans-serif;
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
@@ -106,11 +134,11 @@ body::after {
 
 /* Form Elements */
 #prompt-container {
-    font-size: 24px;
+    font-size: 32px;
     margin: 20px 0;
     text-align: center;
     color: #333;
-    font-style: italic;
+    line-height: 1.2;
 }
 
 .input-area {
@@ -139,6 +167,21 @@ textarea {
     border-radius: 10px;
     resize: none;
     font-size: 16px;
+    font-family: 'Space Mono', monospace;
+}
+
+textarea::placeholder {
+    font-family: 'Space Mono', monospace;
+}
+
+textarea::-webkit-input-placeholder {
+    font-family: 'Space Mono', monospace;
+}
+textarea::-moz-placeholder {
+    font-family: 'Space Mono', monospace;
+}
+textarea:-ms-input-placeholder {
+    font-family: 'Space Mono', monospace;
 }
 
 .image-upload-label {
@@ -157,7 +200,8 @@ button[type="submit"] {
     border: none;
     border-radius: 0px;
     text-transform: lowercase;
-    font-size: 18px;
+    font-size: 30px;
+    font-family: 'PP Migra Italic', 'Arial', sans-serif;
 }
 
 /* Image Preview */

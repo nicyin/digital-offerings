@@ -79,9 +79,9 @@ async function saveEntry(entry) {
             previewContainer.style.display = "none";
             previewContainer.innerHTML = "";
             document.getElementById("prompt-container").textContent = getRandomPrompt();
-            alert("Entry saved successfully!");
+            alert("digital offering accepted");
         } else {
-            throw new Error(data.error || "Failed to save entry");
+            throw new Error(data.error || "offering failed :(");
         }
     } catch (error) {
         console.error("Error:", error);
