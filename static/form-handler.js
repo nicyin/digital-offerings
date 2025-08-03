@@ -1,4 +1,36 @@
 const form = document.getElementById("submissionForm");
+const imageInput = document.getElementById("imageInput");
+
+// Add image preview container to the form
+const previewContainer = document.createElement("div");
+previewContainer.className = "image-preview-container";
+previewContainer.style.display = "none";
+form.querySelector(".input-wrapper").appendChild(previewContainer);
+
+// Handle image selection and preview
+imageInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            previewContainer.style.display = "block";
+            previewContainer.innerHTML = `
+                <div class="preview-wrapper">
+                    <img src="${reader.result}" alt="Preview" class="image-preview">
+                    <button type="button" class="remove-image" aria-label="Remove image">×</button>
+                </div>
+            `;
+
+            // Handle remove button click
+            previewContainer.querySelector(".remove-image").addEventListener("click", () => {
+                imageInput.value = "";
+                previewContainer.style.display = "none";
+                previewContainer.innerHTML = "";
+            });
+        };
+        reader.readAsDataURL(file);
+    }
+});
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -25,17 +57,17 @@ form.addEventListener("submit", async (e) => {
             await saveEntry(newEntry);
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
         alert("Error saving entry. Please try again.");
     }
 });
 
 async function saveEntry(entry) {
     try {
-        const response = await fetch('/api/entries', {
-            method: 'POST',
+        const response = await fetch("/api/entries", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(entry)
         });
@@ -44,13 +76,15 @@ async function saveEntry(entry) {
         if (data.success) {
             // Reset form and show success
             form.reset();
+            previewContainer.style.display = "none";
+            previewContainer.innerHTML = "";
             document.getElementById("prompt-container").textContent = getRandomPrompt();
             alert("Entry saved successfully!");
         } else {
-            throw new Error(data.error || 'Failed to save entry');
+            throw new Error(data.error || "Failed to save entry");
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
         alert("Error saving entry. Please try again.");
     }
-} 
+}
