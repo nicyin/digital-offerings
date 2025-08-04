@@ -218,3 +218,10 @@ button[type="submit"] {
 .remove-image:hover {
     background: rgba(0, 0, 0, 0.7);
 }
+
+.custom-arrow {
+    color: rgba(0, 0, 0, 0.9);
+    max-height: 50px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
