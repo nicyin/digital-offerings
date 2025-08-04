@@ -83,20 +83,11 @@ body::after {
     mix-blend-mode: overlay;
 }
 
-/* Enhanced Entry Container */
-#entries-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
+
 
 /* Enhanced Entry Styling */
 .entry {
+    position: absolute;
     /*backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);*/
     border: 0px;
@@ -105,19 +96,14 @@ body::after {
     border-radius: 8px;
     /*box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.entry:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    font-family: 'Space Mono', monospace;
+    font-size: 28px;
 }
 
 /* Text Entry Styles */
 .entry-type-text {
     /* Specific styles for text-only entries */
     padding: 25px;
-    font-family: 'Space Mono', monospace;
-    font-size: 24px;
     letter-spacing: -0.2em;
 }
 
@@ -134,7 +120,6 @@ body::after {
 }
 
 .entry-text-long {
-    font-size: 20px;
     text-align: left;
     letter-spacing: 0.01em;
 }
@@ -247,4 +232,43 @@ and (max-height: 1194px) {
         font-size: 28px;
         margin-top: 8px;
     }
+}
+
+/* Update entry and container styles for enhanced animations */
+.entry {
+    transition: all 3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    will-change: transform, opacity;
+    /*backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);*/
+}
+
+#entries-container {
+    position: relative;
+    max-width: 80vh;
+    max-height: 80vh;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 40px;
+    overflow: hidden;
+}
+
+/* Add smooth hover effect */
+.entry:hover {
+    transform: scale(1.02);
+    opacity: 1 !important;
+    transition: all 0.5s ease-out;
+}
+
+/* Enhance text readability during animations */
+.entry-text {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure images stay contained */
+.image-wrapper img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
 }
