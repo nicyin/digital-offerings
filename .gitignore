@@ -3,3 +3,4 @@ __pycache__/
 .env
 database.db
 .DS_Store
+vanilla/

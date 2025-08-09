@@ -1,99 +1,108 @@
-function getRandomPosition() {
+function getRandomPosition($container) {
+    // Get container dimensions
+    const containerWidth = $container.width();
+    const containerHeight = $container.height();
+    
+    // Calculate maximum positions while keeping entries visible
+    const maxX = containerWidth - 300; // 300px is approximate entry width
+    const maxY = containerHeight - 200; // 200px is approximate entry height
+    
     return {
-        x: Math.random() * 100 - 50,
-        y: Math.random() * 100 - 50,
-        scale: Math.random() * 0.3 + 0.85
+        x: Math.random() * maxX,
+        y: Math.random() * maxY,
+        scale: Math.random() * 0.2 + 0.9,
+        rotation: Math.random() * 20 - 10
     };
 }
 
-function startOpacityAnimation(entryDiv) {
+function startOpacityAnimation($entryDiv) {
     function updateOpacity() {
-        entryDiv.style.opacity = (Math.random() * 0.6 + 0.2).toString();
+        $entryDiv.css('opacity', (Math.random() * 0.4 + 0.6).toString());
         setTimeout(updateOpacity, 1000 + Math.random() * 1000);
     }
     updateOpacity();
 }
 
-
-
-
 async function loadEntries() {
     try {
-        // Fade out existing entries first
-
+        const $container = $("#entries-container");
         
-        const response = await fetch("/api/entries");
-        const data = await response.json();
-        const container = document.getElementById("entries-container");
+        // Get entries from server
+        const { entries } = await $.getJSON("/api/entries");
         
         // Clear container and wait a moment before starting new entries
-        container.innerHTML = "";
+        $container.empty();
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        data.entries.forEach((entry, index) => {
-            const entryDiv = document.createElement("div");
-            entryDiv.className = "entry";
-            
-            // Set initial random position
-            const pos = getRandomPosition();
-            entryDiv.style.transform = `translate(${pos.x}%, ${pos.y}%) scale(${pos.scale})`;
-            
-            // Ensure opacity starts at 0
-            entryDiv.style.opacity = "0";
+        entries.forEach((entry, index) => {
+            const $entryDiv = $("<div>")
+                .addClass("entry")
+                .css({
+                    opacity: 0
+                });
             
             if (entry.text) {
-                const textP = document.createElement("p");
-                textP.textContent = entry.text;
-                textP.className = "entry-text";
-                entryDiv.appendChild(textP);
+                $("<p>")
+                    .addClass("entry-text")
+                    .text(entry.text)
+                    .appendTo($entryDiv);
             }
             
             if (entry.imageBase64) {
-                const imgWrapper = document.createElement("div");
-                imgWrapper.className = "image-wrapper";
+                const $imgWrapper = $("<div>").addClass("image-wrapper");
+                $("<img>")
+                    .attr({
+                        src: entry.imageBase64,
+                        alt: "Uploaded image"
+                    })
+                    .addClass("entry-image")
+                    .appendTo($imgWrapper);
                 
-                const img = document.createElement("img");
-                img.src = entry.imageBase64;
-                img.alt = "Uploaded image";
-                img.className = "entry-image";
-                
-                imgWrapper.appendChild(img);
-                entryDiv.appendChild(imgWrapper);
+                $imgWrapper.appendTo($entryDiv);
             }
             
-            const timestamp = document.createElement("small");
-            timestamp.textContent = new Date(entry.timestamp).toLocaleString();
-            timestamp.className = "entry-timestamp";
-            entryDiv.appendChild(timestamp);
+            $("<small>")
+                .addClass("entry-timestamp")
+                .text(new Date(entry.timestamp).toLocaleString())
+                .appendTo($entryDiv);
             
-            // Add to container but keep invisible
-            container.appendChild(entryDiv);
+            // Add to container
+            $container.append($entryDiv);
+            
+            // Get random position within container bounds
+            const pos = getRandomPosition($container);
+            $entryDiv.css({
+                left: pos.x + 'px',
+                top: pos.y + 'px',
+                transform: `scale(${pos.scale}) rotate(${pos.rotation}deg)`
+            });
             
             // Force a reflow before starting the animation
-            entryDiv.offsetHeight;
+            $entryDiv[0].offsetHeight;
             
-            // Stagger the initial fade in with easing
+            // Stagger the initial fade in
             setTimeout(() => {
                 requestAnimationFrame(() => {
                     // Add transition class for smoother fade in
-                    entryDiv.classList.add("fade-in");
-                    entryDiv.style.opacity = "1";
+                    $entryDiv
+                        .addClass("fade-in")
+                        .css('opacity', 1);
                     
                     // Start the continuous opacity changes after initial fade
                     setTimeout(() => {
-                        startOpacityAnimation(entryDiv);
+                        startOpacityAnimation($entryDiv);
                     }, 2000);
                 });
-            }, 500 + (index * 300)); // Add base delay plus stagger
+            }, 500 + (index * 300));
         });
     } catch (error) {
         console.error("Error loading entries:", error);
     }
 }
 
-// Load entries immediately
-document.addEventListener("DOMContentLoaded", () => {
+// Load entries when document is ready
+$(document).ready(function() {
     loadEntries();
     // Refresh entries every few seconds
     setInterval(loadEntries, 5000);
-})
+});
