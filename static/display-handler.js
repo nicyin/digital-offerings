@@ -1,11 +1,9 @@
 function getRandomPosition($container) {
-    // Get container dimensions
     const containerWidth = $container.width();
     const containerHeight = $container.height();
     
-    // Calculate maximum positions while keeping entries visible
-    const maxX = containerWidth - 300; // 300px is approximate entry width
-    const maxY = containerHeight - 200; // 200px is approximate entry height
+    const maxX = containerWidth - 300;
+    const maxY = containerHeight - 200;
     
     return {
         x: Math.random() * maxX,
@@ -30,13 +28,13 @@ async function loadEntries() {
         // Get entries from server
         const { entries } = await $.getJSON("/api/entries");
         
-        // Clear container and wait a moment before starting new entries
-        $container.empty();
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // Mark existing entries as old
+        $container.find('.entry').addClass('old-entry');
         
+        // Add new entries
         entries.forEach((entry, index) => {
             const $entryDiv = $("<div>")
-                .addClass("entry")
+                .addClass("entry new-entry")
                 .css({
                     opacity: 0
                 });
@@ -93,8 +91,22 @@ async function loadEntries() {
                         startOpacityAnimation($entryDiv);
                     }, 2000);
                 });
-            }, 500 + (index * 300));
+            }, 800 + (index * 400));
         });
+
+        // Fade out and remove old entries with staggered timing
+        $container.find('.old-entry').each(function(index) {
+            const $oldEntry = $(this);
+            setTimeout(() => {
+                $oldEntry.addClass('fade-out');
+                
+                // Remove after fade out completes
+                setTimeout(() => {
+                    $oldEntry.remove();
+                }, 1200); // Match this with CSS transition duration
+            }, 600 + (index * 200)); // Stagger the fade out
+        });
+
     } catch (error) {
         console.error("Error loading entries:", error);
     }
@@ -104,5 +116,5 @@ async function loadEntries() {
 $(document).ready(function() {
     loadEntries();
     // Refresh entries every few seconds
-    setInterval(loadEntries, 5000);
+    setInterval(loadEntries, 10000);
 });
